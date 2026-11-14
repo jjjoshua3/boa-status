@@ -6,42 +6,71 @@
   <title>Status · BOA Portaal</title>
   <meta name="description" content="Of het portaal, de servicedesk, het systeem, de mail en de aanmelddienst bereikbaar zijn.">
   <style>
-    :root { --ink: #0f2537; --soft: #3d4c59; --paper: #f4f0e8; --card: #fffcf7; --line: #e3d9cc; --ok: #1f6b45; --let: #9a5b12; --stop: #8d2e2e; }
+    :root {
+      --ink: #0f2537;
+      --soft: #3d4c59;
+      --paper: #f4f0e8;
+      --card: #fffcf7;
+      --line: #e3d9cc;
+      --ok: #1f6b45;
+      --ok-soft: #e5f3eb;
+      --let: #9a5b12;
+      --let-soft: #f3e6d4;
+      --stop: #8d2e2e;
+      --stop-soft: #f8e8e8;
+    }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Segoe UI", "Avenir Next", sans-serif; }
-    main { width: min(760px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 64px; }
-    .merk { letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 700; }
-    h1 { font-family: Georgia, "Iowan Old Style", serif; font-weight: 500; font-size: 40px; margin: 8px 0 8px; }
-    .sub { color: var(--soft); margin: 0 0 22px; max-width: 52ch; line-height: 1.5; }
-    .totaal { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 18px 18px 16px; display: flex; gap: 14px; align-items: center; }
-    .bol { width: 18px; height: 18px; border-radius: 99px; background: #c8c0b4; flex: none; }
+    header { background: var(--ink); color: #fff; }
+    .binnen { width: min(920px, calc(100% - 32px)); margin: 0 auto; }
+    .kop { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
+    .merk { width: 36px; height: 36px; border-radius: 50%; background: #f4f0e8; color: var(--ink); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    .kop strong { letter-spacing: 0.08em; font-size: 12px; }
+    .kop span { display: block; font-family: Georgia, "Iowan Old Style", serif; font-style: italic; color: #d9cfc3; font-size: 13px; }
+    main { padding: 28px 0 64px; }
+    h1 { font-family: Georgia, "Iowan Old Style", serif; font-weight: 500; font-size: 42px; margin: 0 0 8px; }
+    .sub { color: var(--soft); margin: 0 0 18px; max-width: 58ch; line-height: 1.5; }
+    .totaal { border: 1px solid var(--line); background: var(--card); border-radius: 18px; padding: 18px; display: flex; gap: 14px; align-items: center; }
+    .totaal.werkt { background: var(--ok-soft); border-color: #b7dcc8; }
+    .totaal.traag, .totaal.onderhoud { background: var(--let-soft); border-color: #e3d0b4; }
+    .totaal.storing { background: var(--stop-soft); border-color: #e4c4c4; }
+    .bol { width: 16px; height: 16px; border-radius: 99px; background: #c8c0b4; flex: none; box-shadow: 0 0 0 4px rgba(15, 37, 55, 0.06); }
     .bol.werkt { background: var(--ok); }
     .bol.traag, .bol.onderhoud { background: var(--let); }
     .bol.storing { background: var(--stop); }
-    .totaal strong { display: block; font-size: 18px; }
+    .totaal strong { display: block; font-size: 20px; }
     .totaal span { color: var(--soft); font-size: 14px; }
-    ul { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; }
-    li { border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: 18px 1fr auto; gap: 12px; align-items: center; }
+    .acties { display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px; color: var(--soft); font-size: 13px; }
+    button { font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+    ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    li { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: start; }
     li b { font-weight: 650; }
-    li small { color: var(--soft); display: block; margin-top: 2px; }
-    .staat { font-size: 13px; color: var(--soft); }
-    .melding { margin-top: 16px; border-left: 3px solid var(--let); padding: 8px 12px; }
+    li small { color: var(--soft); display: block; margin-top: 3px; }
+    .staat { margin-top: 8px; font-size: 13px; color: var(--soft); }
+    .melding { margin-top: 16px; border-left: 3px solid var(--let); background: var(--card); border-radius: 0 12px 12px 0; padding: 10px 12px; }
     footer { margin-top: 28px; color: var(--soft); font-size: 13px; }
     a { color: var(--ink); }
+    @media (max-width: 700px) { ul { grid-template-columns: 1fr; } h1 { font-size: 34px; } }
   </style>
 </head>
 <body>
-  <main>
-    <p class="merk">BOA Portaal</p>
+  <header>
+    <div class="binnen kop">
+      <div class="merk" aria-hidden="true">BOA</div>
+      <div><strong>BOA PORTAAL</strong><span>Voor BOA's, door BOA's</span></div>
+    </div>
+  </header>
+  <main class="binnen">
     <h1>Status</h1>
-    <p class="sub">Deze pagina haalt zelf op of de onderdelen bereikbaar zijn. Geen account, geen log. Een groene stip betekent dat de site antwoordde. Een storing betekent dat het ophalen mislukte.</p>
+    <p class="sub">Of het portaal, de servicedesk, het systeem, de mail en de aanmelddienst bereikbaar zijn. Een groene stip betekent dat de site antwoordde.</p>
     <section class="totaal" id="totaal">
       <i class="bol"></i>
-      <div><strong>Bezig met ophalen</strong><span>De eerste controle duurt een paar seconden.</span></div>
+      <div><strong>Bezig met ophalen</strong><span>De controle loopt.</span></div>
     </section>
+    <div class="acties"><span id="ritme">Controle elke 45 seconden.</span><button type="button" id="opnieuw">Opnieuw ophalen</button></div>
     <ul id="lijst"></ul>
     <p class="melding" id="melding" hidden></p>
-    <footer>Controle elke 45 seconden. <a href="https://boaportaal.nl/privacy">Privacy</a></footer>
+    <footer><a href="https://boaportaal.nl/privacy">Privacy</a> · <a href="https://boaportaal.nl">Naar het portaal</a></footer>
   </main>
   <script>
     const TEKST = { werkt: "Werkt", traag: "Traag", storing: "Storing", onderhoud: "Onderhoud" };
@@ -52,27 +81,40 @@
       storing: ["Er is een storing", "Minstens één onderdeel antwoordde niet."],
     };
     function esc(v) {
-      return String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&", "<": "<", ">": ">", '"': """, "'": "&#39;" }[c]));
+      return String(v ?? "").replace(/[&<>"']/g, (c) => {
+        if (c === "&") return "&" + "amp;";
+        if (c === "<") return "&" + "lt;";
+        if (c === ">") return "&" + "gt;";
+        if (c === '"') return "&" + "quot;";
+        return "&" + "#39;";
+      });
     }
     function teken(data) {
       const totaal = data.totaal || "storing";
       const kop = TOTAAL[totaal] || TOTAAL.storing;
       const moment = data.moment ? new Date(data.moment).toLocaleString("nl-NL") : "";
-      document.getElementById("totaal").innerHTML = `<i class="bol ${esc(totaal)}"></i><div><strong>${esc(kop[0])}</strong><span>${esc(kop[1])} Laatste controle: ${esc(moment)}.</span></div>`;
-      document.getElementById("lijst").innerHTML = (data.diensten || []).map((d) => `<li><i class="bol ${esc(d.staat)}"></i><div><b>${esc(d.naam)}</b><small>${esc(d.tekst || d.url || "")}</small></div><span class="staat">${esc(TEKST[d.staat] || d.staat)}${d.ms ? ` · ${esc(d.ms)} ms` : ""}</span></li>`).join("");
+      const blok = document.getElementById("totaal");
+      blok.className = "totaal " + totaal;
+      blok.innerHTML = `<i class="bol ${esc(totaal)}"></i><div><strong>${esc(kop[0])}</strong><span>${esc(kop[1])} Laatste controle: ${esc(moment)}.</span></div>`;
+      document.getElementById("lijst").innerHTML = (data.diensten || []).map((d) => `<li><i class="bol ${esc(d.staat)}"></i><div><b>${esc(d.naam)}</b><small>${esc(d.tekst || d.url || "")}</small><div class="staat">${esc(TEKST[d.staat] || d.staat)}${d.ms ? ` · ${esc(d.ms)} ms` : ""}</div></div></li>`).join("");
       const melding = document.getElementById("melding");
       if (data.melding) { melding.hidden = false; melding.textContent = data.melding; }
       else melding.hidden = true;
     }
     async function haal() {
+      const knop = document.getElementById("opnieuw");
+      knop.disabled = true;
       try {
-        const r = await fetch("/api/pulse", { cache: "no-store" });
-        const data = await r.json();
-        teken(data);
+        const r = await fetch("/api/pulse", { cache: "no-store", signal: AbortSignal.timeout(12000) });
+        if (!r.ok) throw new Error(String(r.status));
+        teken(await r.json());
       } catch {
         teken({ totaal: "storing", moment: new Date().toISOString(), diensten: [{ naam: "Status", staat: "storing", tekst: "De controle kon zichzelf niet ophalen." }] });
+      } finally {
+        knop.disabled = false;
       }
     }
+    document.getElementById("opnieuw").addEventListener("click", haal);
     haal();
     setInterval(haal, 45000);
   </script>

@@ -44,23 +44,23 @@ export default async () => {
     if (!item.dienst || (Number.isFinite(tot) && tot < nu)) continue;
     gepland.set(String(item.dienst), String(item.tekst || "Onderhoud"));
   }
-  const diensten = [
-    { naam: "Status", staat: "werkt", ms: 0, tekst: "Deze pagina haalt de controle zelf op.", url: "" },
-  ];
-  for (const [naam, url, leesbaar] of DOELEN) {
+  const gemeten = await Promise.all(DOELEN.map(async ([naam, url, leesbaar]) => {
     if (gepland.has(naam)) {
-      diensten.push({ naam, staat: "onderhoud", ms: 0, tekst: gepland.get(naam), url: leesbaar });
-      continue;
+      return { naam, staat: "onderhoud", ms: 0, tekst: gepland.get(naam), url: leesbaar };
     }
     const uit = await meet(url);
-    diensten.push({
+    return {
       naam,
       staat: uit.staat,
       ms: uit.ms,
       tekst: uit.staat === "storing" ? `${leesbaar} antwoordde niet.` : leesbaar,
       url: leesbaar,
-    });
-  }
+    };
+  }));
+  const diensten = [
+    { naam: "Status", staat: "werkt", ms: 0, tekst: "Deze pagina haalt de controle zelf op.", url: "" },
+    ...gemeten,
+  ];
   const staten = diensten.map((d) => d.staat);
   const totaal = staten.includes("storing") ? "storing" : staten.includes("onderhoud") ? "onderhoud" : staten.includes("traag") ? "traag" : "werkt";
   return new Response(JSON.stringify({
